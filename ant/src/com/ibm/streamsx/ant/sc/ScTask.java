@@ -22,6 +22,7 @@ public class ScTask extends ExecBasedTask {
      * State defined for this task.
      */
     private String mainComposite;
+    private String compileTimeArgument;
     private boolean clean;
     private boolean _static;
     private boolean standalone;
@@ -39,7 +40,7 @@ public class ScTask extends ExecBasedTask {
     public ScTask() {
         super("sc");
     }
-    
+
     /*
      * Setters for all the attributes, automatically called by ant.
      */
@@ -48,10 +49,15 @@ public class ScTask extends ExecBasedTask {
         this.mainComposite = mainComposite;
     }
 
+    public void setCompileTimeArgument(String compileTimeArgument)
+    {
+      this.compileTimeArgument=compileTimeArgument;
+    }
+
     public void setClean(boolean clean) {
         this.clean = clean;
     }
-    
+
 	public void setNoToolkitIndexing(boolean noToolkitIndexing) {
 		this.noToolkitIndexing = noToolkitIndexing;
 	}
@@ -73,7 +79,7 @@ public class ScTask extends ExecBasedTask {
     public void setOutputDirectory(File outputDirectory) {
         this.outputDirectory = outputDirectory;
     }
-    
+
     public void setDataDirectory(File dataDirectory) {
         this.dataDirectory = dataDirectory;
     }
@@ -96,12 +102,16 @@ public class ScTask extends ExecBasedTask {
      * of the flag to make ant -verbose readable.
      */
     protected void setArguments(ExecTask exec) {
-        
-        
+
+
 
         exec.createArg().setValue("--main-composite");
         exec.createArg().setValue(mainComposite);
 
+        if(compileTimeArgument!=null)
+        {
+          exec.createArg().setValue(compileTimeArgument);
+        }
         if (clean)
             exec.createArg().setValue("--clean");
 
@@ -137,7 +147,7 @@ public class ScTask extends ExecBasedTask {
             exec.createArg().setValue("--use-transport");
             exec.createArg().setValue(transport.toString());
         }
-        
+
         if (fusion != null) {
             exec.createArg().setValue("--part-mode");
             exec.createArg().setValue(fusion.getOption());
